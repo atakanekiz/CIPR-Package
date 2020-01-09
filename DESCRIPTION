@@ -1,0 +1,12 @@
+Package: CIPR
+Type: Package
+Title: Cluster Identity Predictor
+Version: 0.1.0
+Author: Atakan Ekiz
+Maintainer: Atakan Ekiz <atakanekiz@gmail.com>
+Description: CIPR (Cluster Identity PRedictor) package is developed to help annotating unknown cell clusters in single cell RNAseq (scRNAseq) experiments. Due to overlapping gene expression profiles, annotating the biological origins of single cell clusters can be challenging. The current software solutions to help annotating single cell clusters generally lack a user-friendly GUI, can take long times to compute, or may not have suitable reference data frames for the experimental data at hand. Alternatively, researchers can manually examine a few known marker genes in the experimental data to approximate the identity of single cell clusters which can be low throughput, time consuming, and subjective. We introduce CIPR (Cluster Identity PRedictor) package (and its Shiny implementation) to address these shortcomings. CIPR scores the gene expression profiles of unknown single cell clusters against a collection of known reference cell types and calculates an identity score for the cluster-reference cell pairs. Multiple reference RNAseq/microarray datasets obtained from sorted human and mouse cells are available in CIPR and the computational pipeline is agnostic to species differences allowing this program to be used with both human and mouse input data. Users can limit the analysis to only certain reference cell types and to genes with high overall variance. Furthrmore, CIPR can also work with custom reference data frames provided by the users to be used in specialized experimental contexts. Through this R-package implementation, CIPR can be run directly in R and be implemented easily in different analytical contexts. In summary, CIPR is a software solution to facilitate the analysis of scRNAseq data.
+License: GPL-3
+Encoding: UTF-8
+LazyData: true
+Imports: ggpubr, gtools, tibble, dplyr, rlang
+RoxygenNote: 7.0.2
