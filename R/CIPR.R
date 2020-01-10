@@ -406,7 +406,7 @@ CIPR <- function(input_dat,
       for (i in clusters) {
 
         # Increment the progress bar, and update the detail text.
-        message(paste("Analyzing cluster", i))
+        # message(paste("Analyzing cluster", i))
 
         # Subset on the cluster in iteration
         sel_clst <- input_dat %>%
