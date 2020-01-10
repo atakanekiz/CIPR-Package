@@ -230,7 +230,7 @@ CIPR <- function(input_dat,
       ref_annot <- immgen_samples
 
 
-  } else if(reference == "msrnaseq"){
+  } else if(reference == "mmrnaseq"){
 
     message("Reading MmRNAseq reference data")
 
