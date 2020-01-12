@@ -308,7 +308,20 @@ CIPR <- function(input_dat,
 
     sel_positions <- which(ref_annot[, "reference_cell_type"] %in% select_ref_subsets)
 
-    if(length(sel_positions) == 0) stop("Selected subset is not present in the reference dataset. Please check spelling.")
+    if(length(sel_positions) == 0) stop("Selected subset is not present in the reference dataset. Please check spelling, as the string input must exactly match to reference cell type.")
+
+    not_found <- !select_ref_subsets %in% ref_annot[, "reference_cell_type"]
+
+    if(sum(not_found != 0 )) {
+
+        message("Following subsets were not found in reference:")
+
+        print(select_ref_subsets[not_found])
+
+        message("Please double check your entry for spelling errors, as the string input must exactly match to reference cell type.")
+
+    }
+
 
     select_ref_subsets <- as.character(ref_annot[sel_positions, "short_name"])
 
