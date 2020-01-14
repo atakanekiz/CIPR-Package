@@ -56,7 +56,7 @@
 #' @param global_results_obj Logical value. Set it to TRUE if you would like to
 #' keep the analysis results as a global object. Defaults to TRUE.
 #'
-#' @param ... arguments to pass to theme() (for graph manipulation)
+#' @param ... arguments to pass to ggplot2::theme() (for graph manipulation)
 #'
 #' @return Graphical outputs and/or data frames of identity scores calculated
 #' for each cluster in the input data.
@@ -161,18 +161,24 @@ CIPR <- function(input_dat,
 
 
 
-  suppressMessages({
-    require(ggpubr)
-    require(gtools)
-    require(tibble)
-    require(dplyr)
-  })
+  # suppressMessages({
+  #   require(ggpubr)
+  #   require(gtools)
+  #   require(tibble)
+  #   require(dplyr)
+  # })
 
 
 
   ######################### Prepare input_dat   #########################
 
   message("Preparing input data")
+
+  if(!comp_method %in% c("logfc_dot_product",
+                         "logfc_spearman",
+                         "logfc_pearson",
+                         "all_genes_spearman",
+                         "all_genes_pearson")) stop("Check comp_method. Allowed strings are: 'logfc_dot_product', 'logfc_spearman', 'logfc_pearson', 'all_genes_spearman', 'all_genes_pearson'")
 
   if(grepl("logfc", comp_method)){
 
@@ -314,11 +320,10 @@ CIPR <- function(input_dat,
 
     if(sum(not_found != 0 )) {
 
-        message("Following subsets were not found in reference:")
+        message("Following subsets were not found in reference (Please double check your entry for spelling errors, as the string input must exactly match to reference cell type):")
 
         print(select_ref_subsets[not_found])
 
-        message("Please double check your entry for spelling errors, as the string input must exactly match to reference cell type.")
 
     }
 
@@ -384,7 +389,7 @@ CIPR <- function(input_dat,
       clusters <- gtools::mixedsort(
         levels(
           as.factor(
-            pull(input_dat, grep("cluster", x = colnames(input_dat),
+            dplyr::pull(input_dat, grep("cluster", x = colnames(input_dat),
                                  ignore.case = T, value = T)
             )
           )
@@ -423,8 +428,8 @@ CIPR <- function(input_dat,
 
         # Subset on the cluster in iteration
         sel_clst <- input_dat %>%
-          filter(!!rlang::sym(cluster_column) == i) %>%
-          select(c(!!sym(gene_column), !!sym(logFC_column)))
+          dplyr::filter(!!rlang::sym(cluster_column) == i) %>%
+          dplyr::select(c(!!rlang::sym(gene_column), !!rlang::sym(logFC_column)))
 
 
         # Merge SCseq cluster log FC value with immgen log FC for shared genes
@@ -441,10 +446,10 @@ CIPR <- function(input_dat,
         # Store identity scores in a data frame
         df <- data.frame(identity_score = score_sum)
 
-        df <- rownames_to_column(df, var="reference_id")
+        df <- tibble::rownames_to_column(df, var="reference_id")
 
 
-        df <- left_join(df, ref_annot, by=c("reference_id" = "short_name"))
+        df <- dplyr::left_join(df, ref_annot, by=c("reference_id" = "short_name"))
 
 
         # Store cluster information in a column
@@ -498,24 +503,24 @@ CIPR <- function(input_dat,
 
 
         trim_dat <- input_dat %>%
-          filter(!!rlang::sym(cluster_column) == i)
+          dplyr::filter(!!rlang::sym(cluster_column) == i)
 
-        dat_genes <- trim_dat[gene_column] %>% pull() %>% as.character
-        ref_genes <- ref_dat[ref_gene_column] %>% pull() %>% as.character
+        dat_genes <- trim_dat[gene_column] %>% dplyr::pull() %>% as.character
+        ref_genes <- ref_dat[ref_gene_column] %>% dplyr::pull() %>% as.character
 
         common_genes <- intersect(dat_genes, ref_genes)
 
 
         trim_dat <- trim_dat %>%
-          filter(!!rlang::sym(gene_column) %in% common_genes) %>%
-          arrange(!!rlang::sym(gene_column)) %>%
-          select(- !!rlang::sym(gene_column))
+          dplyr::filter(!!rlang::sym(gene_column) %in% common_genes) %>%
+          dplyr::arrange(!!rlang::sym(gene_column)) %>%
+          dplyr::select(- !!rlang::sym(gene_column))
 
 
         trim_ref <- ref_dat %>%
-          filter(!!rlang::sym(ref_gene_column) %in% common_genes) %>%
-          arrange(!!rlang::sym(ref_gene_column)) %>%
-          select(- !!rlang::sym(ref_gene_column))
+          dplyr::filter(!!rlang::sym(ref_gene_column) %in% common_genes) %>%
+          dplyr::arrange(!!rlang::sym(ref_gene_column)) %>%
+          dplyr::select(- !!rlang::sym(ref_gene_column))
 
 
         # Calculate correlation between the the cluster (single column in trimmed input data) and each of the
@@ -530,7 +535,7 @@ CIPR <- function(input_dat,
         # Combine results with reference annotations
         if(reference != "custom"){
 
-          df <- left_join(df, ref_annot, by=c("reference_id" = "short_name"))
+          df <- dplyr::left_join(df, ref_annot, by=c("reference_id" = "short_name"))
 
 
 
@@ -538,7 +543,7 @@ CIPR <- function(input_dat,
 
         } else if (reference == "custom" & !is.null(custom_ref_annot_path)){
 
-          df <- left_join(df, ref_annot, by=c("reference_id" = "short_name"))
+          df <- dplyr::left_join(df, ref_annot, by=c("reference_id" = "short_name"))
 
 
         } else if(reference == "custom" & is.null(custom_ref_annot_path)){
@@ -574,20 +579,20 @@ CIPR <- function(input_dat,
 
 
 
-      dat_genes <- input_dat[gene_column] %>% pull() %>% as.character
-      ref_genes <- ref_dat[ref_gene_column] %>% pull() %>% as.character
+      dat_genes <- input_dat[gene_column] %>% dplyr::pull() %>% as.character
+      ref_genes <- ref_dat[ref_gene_column] %>% dplyr::pull() %>% as.character
 
       common_genes <- intersect(dat_genes, ref_genes)
 
       trim_dat <- input_dat %>%
-        filter(!!rlang::sym(gene_column) %in% common_genes) %>%
-        arrange(!!rlang::sym(gene_column)) %>%
-        select_(.dots= paste0("-", gene_column))
+        dplyr::filter(!!rlang::sym(gene_column) %in% common_genes) %>%
+        dplyr::arrange(!!rlang::sym(gene_column)) %>%
+        dplyr::select_(.dots= paste0("-", gene_column))
 
       trim_ref <- ref_dat %>%
-        filter(!!rlang::sym(ref_gene_column) %in% common_genes) %>%
-        arrange(!!rlang::sym(ref_gene_column)) %>%
-        select_(.dots=paste0("-", ref_gene_column))
+        dplyr::filter(!!rlang::sym(ref_gene_column) %in% common_genes) %>%
+        dplyr::arrange(!!rlang::sym(ref_gene_column)) %>%
+        dplyr::select_(.dots=paste0("-", ref_gene_column))
 
       clusters <- colnames(trim_dat)
 
@@ -604,13 +609,13 @@ CIPR <- function(input_dat,
 
         df <- data.frame(identity_score = cor_df[1,])
 
-        df <- rownames_to_column(df, var="reference_id")
+        df <- tibble::rownames_to_column(df, var="reference_id")
 
 
 
         if(reference != "custom"){
 
-          df <- left_join(df, ref_annot, by=c("reference_id" = "short_name"))
+          df <- dplyr::left_join(df, ref_annot, by=c("reference_id" = "short_name"))
 
 
 
@@ -618,7 +623,7 @@ CIPR <- function(input_dat,
 
         } else if (reference == "custom" & !is.null(custom_ref_annot_path)){
 
-          df <- left_join(df, ref_annot, by=c("reference_id" = "short_name"))
+          df <- dplyr::left_join(df, ref_annot, by=c("reference_id" = "short_name"))
 
 
         } else if(reference == "custom" & is.null(custom_ref_annot_path)){
@@ -669,7 +674,7 @@ CIPR <- function(input_dat,
 
         # Extract results calculated for individual clusters
         df_plot <- master_df %>%
-          filter(cluster == i)
+          dplyr::filter(cluster == i)
 
         # Calculate mean and sd deviation for adding confidence bands to graphs
         score_mean <- mean(df_plot$identity_score)
@@ -679,20 +684,20 @@ CIPR <- function(input_dat,
         plotname <- paste("cluster", i, sep="")
 
         # Plot identity scores per cluster per reference cell type and add confidence bands
-        ind_clu_plots[[plotname]] <- ggdotplot(df_plot, x = "reference_id", y="identity_score",
+        ind_clu_plots[[plotname]] <- ggpubr::ggdotplot(df_plot, x = "reference_id", y="identity_score",
                                                fill = "reference_cell_type", xlab=F, ylab="Reference identity score",
                                                font.y = c(14, "bold", "black"), size=1, x.text.angle=90,
                                                title = paste("Cluster:",i), font.title = c(15, "bold.italic"),
                                                font.legend = c(15, "plain", "black"))+
-          theme(axis.text.x = element_text(size=10, vjust=0.5, hjust=1))+
-          geom_hline(yintercept=score_mean)+
-          annotate("rect", xmin = 1, xmax = length(df_plot$reference_id),
+          ggplot2::theme(axis.text.x = element_text(size=10, vjust=0.5, hjust=1))+
+          ggplot2::geom_hline(yintercept=score_mean)+
+          ggplot2::annotate("rect", xmin = 1, xmax = length(df_plot$reference_id),
                    ymin = score_mean-score_sd, ymax = score_mean+score_sd,
                    fill = "gray50", alpha = .1)+
-          annotate("rect", xmin = 1, xmax = length(df_plot$reference_id),
+          ggplot2::annotate("rect", xmin = 1, xmax = length(df_plot$reference_id),
                    ymin = score_mean-2*score_sd, ymax = score_mean+2*score_sd,
                    fill = "gray50", alpha = .1)+
-          theme(...)
+          ggplot2::theme(...)
 
 
       }
@@ -701,7 +706,7 @@ CIPR <- function(input_dat,
 
 
       if(save_png == T) {
-        ggexport(filename = "CIPR_individual_clusters.png", plotlist = ind_clu_plots, ncol = 1, width = 1800, height = 360 * length(clusters))
+        ggpubr::ggexport(filename = "CIPR_individual_clusters.png", plotlist = ind_clu_plots, ncol = 1, width = 1800, height = 360 * length(clusters))
       }
       else {
         print(ggarrange(plotlist = ind_clu_plots, ncol = 1, common.legend = T))
@@ -713,13 +718,15 @@ CIPR <- function(input_dat,
     # Prepare top5 summary plots
     # This plot will show the 5 highest scoring reference cell types for each cluster.
 
-    if(plot_top == T){
+    # if(plot_top == T){
+
+  message("Preparing top plots")
 
       # Extract top5 hits from the reuslts
       top_df <- master_df %>%
-        group_by(cluster) %>%    #cluster
-        top_n(top_num, wt = identity_score) %>%
-        arrange(cluster, desc(identity_score))
+        dplyr::group_by(cluster) %>%    #cluster
+        dplyr::top_n(top_num, wt = identity_score) %>%
+        dplyr::arrange(cluster, desc(identity_score))
 
       # Index variable helps keeping the results for clusters separate and helps ordered outputs
       top_df$index <- 1:nrow(top_df)
@@ -734,7 +741,7 @@ CIPR <- function(input_dat,
 
 
       # Extract relevant columns
-      top_df <- select(top_df, cluster,
+      top_df <- dplyr::select(top_df, cluster,
                        reference_cell_type,
                        reference_id,
                        long_name,
@@ -744,25 +751,25 @@ CIPR <- function(input_dat,
 
       if(global_results_obj == T) CIPR_top_results <<- top_df
 
-      p <- ggdotplot(top_df, x="index", y="identity_score",
+      p <- ggpubr::ggdotplot(top_df, x="index", y="identity_score",
                      fill = "cluster", size=1, x.text.angle=90,
                      font.legend = c(15, "plain", "black")) +
-        scale_x_discrete(labels=top_df$reference_id)+
-        theme(axis.text.x = element_text(vjust=0.5, hjust=1))+
-        theme(...)
+        ggplot2::scale_x_discrete(labels=top_df$reference_id)+
+        ggplot2::theme(axis.text.x = element_text(vjust=0.5, hjust=1))+
+        ggplot2::theme(...)
 
       if(global_plot_obj == T) top_plots <<- p
 
       if(save_png == T) {
 
-        ggexport(p, filename = "CIPR_top_hits.png", ncol = 1, width = 150 * length(clusters), height = 300)
+        ggpubr::ggexport(p, filename = "CIPR_top_hits.png", ncol = 1, width = 150 * length(clusters), height = 300)
 
       } else {
 
-        print(p)
+        if(plot_top == T) print(p)
 
       }
 
-    }
+    # }
 
   } # close function
