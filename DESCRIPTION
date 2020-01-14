@@ -9,4 +9,6 @@ License: GPL-3
 Encoding: UTF-8
 LazyData: true
 Imports: ggpubr, gtools, tibble, dplyr, rlang
+URL: https://github.com/atakanekiz/CIPR-Package
+BugReports: https://github.com/atakanekiz/CIPR-Package/issues
 RoxygenNote: 7.0.2
