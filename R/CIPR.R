@@ -689,7 +689,7 @@ CIPR <- function(input_dat,
                                                font.y = c(14, "bold", "black"), size=1, x.text.angle=90,
                                                title = paste("Cluster:",i), font.title = c(15, "bold.italic"),
                                                font.legend = c(15, "plain", "black"))+
-          ggplot2::theme(axis.text.x = element_text(size=10, vjust=0.5, hjust=1))+
+          ggplot2::theme(axis.text.x = ggplot2::element_text(size=10, vjust=0.5, hjust=1))+
           ggplot2::geom_hline(yintercept=score_mean)+
           ggplot2::annotate("rect", xmin = 1, xmax = length(df_plot$reference_id),
                    ymin = score_mean-score_sd, ymax = score_mean+score_sd,
@@ -709,7 +709,7 @@ CIPR <- function(input_dat,
         ggpubr::ggexport(filename = "CIPR_individual_clusters.png", plotlist = ind_clu_plots, ncol = 1, width = 1800, height = 360 * length(clusters))
       }
       else {
-        print(ggarrange(plotlist = ind_clu_plots, ncol = 1, common.legend = T))
+        print(ggpubr::ggarrange(plotlist = ind_clu_plots, ncol = 1, common.legend = T))
       }
 
     }
@@ -755,7 +755,7 @@ CIPR <- function(input_dat,
                      fill = "cluster", size=1, x.text.angle=90,
                      font.legend = c(15, "plain", "black")) +
         ggplot2::scale_x_discrete(labels=top_df$reference_id)+
-        ggplot2::theme(axis.text.x = element_text(vjust=0.5, hjust=1))+
+        ggplot2::theme(axis.text.x = ggplot2::element_text(vjust=0.5, hjust=1))+
         ggplot2::theme(...)
 
       if(global_plot_obj == T) top_plots <<- p
