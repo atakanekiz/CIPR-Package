@@ -8,6 +8,7 @@ Description: CIPR (Cluster Identity PRedictor) package is developed to help anno
 License: GPL-3
 Encoding: UTF-8
 LazyData: true
+Depends: R (>= 3.5.0)
 Imports: ggpubr, gtools, tibble, dplyr, rlang
 Suggests: knitr, rmarkdown
 VignetteBuilder: knitr
