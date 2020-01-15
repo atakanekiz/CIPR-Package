@@ -141,11 +141,11 @@ pbmc <- FindClusters(pbmc, resolution = 0.5)
 
 ```
 
-## Run non-linear dimensionality reduction (UMAP)
+## Run non-linear dimensionality reduction (tSNE)
 
 ```{r, results="hide", message=F}
 
-pbmc <- RunUMAP(pbmc, dims = 1:10)
+pbmc <- RunTSNE(pbmc, dims = 1:10)
 
 pbmc$unnamed_clusters <- Idents(pbmc)
 
