@@ -40,7 +40,14 @@ allmarkers <- FindAllMarkers(seurat_object)
 avgexp <- AverageExpression(seurat_object)
 
 
-# Create a plot summarizing top scoring references per cluster
+# Plot summarizing top scoring references per cluster (logFC comparison)
+CIPR(input_dat = allmarkers,
+     comp_method = "logfc_dot_product", 
+     reference = "immgen", 
+     plot_ind = F,
+     plot_top = T)
+     
+# Plot summarizing top scoring references per cluster (all-genes correlation)
 CIPR(input_dat = allmarkers,
      comp_method = "logfc_dot_product", 
      reference = "immgen", 
@@ -48,7 +55,7 @@ CIPR(input_dat = allmarkers,
      plot_top = T)
      
      
-# Create a plot summarizing top scoring references per cluster
+# Plots for individual clusters
 CIPR(input_dat = allmarkers,
      comp_method = "logfc_dot_product", 
      reference = "immgen", 
@@ -62,6 +69,7 @@ CIPR(input_dat = allmarkers,
      plot_ind = F,
      plot_top = T, 
      select_ref_subsets = c("T cell", "B cell", "NK cell"))
+
 
 
 
