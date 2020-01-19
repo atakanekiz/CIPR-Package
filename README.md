@@ -29,10 +29,10 @@ install_github("atakanekiz/CIPR-Package", build_vignettes = TRUE)
 # install_github("atakanekiz/CIPR-Package", build_vignettes = FALSE)
 ```
 
+#### Example use case in conjunction with Seurat pipeline
 
 ```{r}
 
-# Example use case in conjunction with Seurat pipeline
 
 library(Seurat)
 
