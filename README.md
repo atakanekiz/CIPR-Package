@@ -19,7 +19,7 @@ This repository contains the source code for the R package implementation of CIP
 
 ---
 
-## Installation
+## Installation and Usage
 
 ```{r}
 
@@ -27,6 +27,43 @@ install_github("atakanekiz/CIPR-Package", build_vignettes = TRUE)
 
 # # For faster installation without vignette
 # install_github("atakanekiz/CIPR-Package", build_vignettes = FALSE)
+```
+
+
+```{r}
+
+# Example use case in conjunction with Seurat pipeline
+
+library(Seurat)
+
+allmarkers <- FindAllMarkers(seurat_object)
+avgexp <- AverageExpression(seurat_object)
+
+
+# Create a plot summarizing top scoring references per cluster
+CIPR(input_dat = allmarkers,
+     comp_method = "logfc_dot_product", 
+     reference = "immgen", 
+     plot_ind = F,
+     plot_top = T)
+     
+     
+# Create a plot summarizing top scoring references per cluster
+CIPR(input_dat = allmarkers,
+     comp_method = "logfc_dot_product", 
+     reference = "immgen", 
+     plot_ind = T,
+     plot_top = F)
+
+# Limiting the analysis to certain reference subsets
+CIPR(input_dat = allmarkers,
+     comp_method = "logfc_dot_product", 
+     reference = "immgen", 
+     plot_ind = F,
+     plot_top = T, 
+     select_ref_subsets = c("T cell", "B cell", "NK cell"))
+
+
 
 ```
 
