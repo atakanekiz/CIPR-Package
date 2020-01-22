@@ -124,7 +124,7 @@ To be adaptable to various experimental contexts, CIPR enables users to:
 
 * Select only interesting reference subsets from the provided reference datasets
 
-* Limit the analysis to the genes (in the reference dataset) whose expression variance above a certain quantile determined by the user.
+* Limit the analysis to the genes whose expression variance (in the reference dataset) is above a certain quantile determined by the user.
 
 
 ---
