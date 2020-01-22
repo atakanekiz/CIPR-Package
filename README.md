@@ -124,7 +124,7 @@ To be adaptable to various experimental contexts, CIPR enables users to:
 
 * Select only interesting reference subsets from the provided reference datasets
 
-* Limit the analysis to the reference genes expression variance above a certain quantile determined by the user.
+* Limit the analysis to the reference genes which have an expression variance above a certain quantile determined by the user.
 
 ---
 
@@ -141,7 +141,7 @@ In the plot below x-axis signifies the individual samples within the reference d
 
 ### Summary of top hits per cluster
 
-It is often easier to examine the top predictions in one graph. This plot shows the top 5 scoring reference samples for each cluster (shown in different colors). The user can draw a rectangle around the data points which will prompt a table output underneath the image with further details.
+It is often easier to examine the top predictions in one graph. This plot shows the top 5 scoring reference samples for each cluster (shown in different colors).
 
 <kbd>
 <img src=https://github.com/atakanekiz/CIPR-Package/raw/master/doc/sample_top_output.png>
