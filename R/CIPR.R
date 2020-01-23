@@ -747,7 +747,7 @@ CIPR <- function(input_dat,
                        long_name,
                        description,
                        identity_score,
-                       index, everything())
+                       index, dplyr::everything())
 
       if(global_results_obj == T) CIPR_top_results <<- top_df
 
