@@ -38,7 +38,7 @@ if (!requireNamespace("devtools", quietly = TRUE))
 
 # Use this option if you want to build vignettes during installation
 # This can take a long time due to the installation of suggested packages.
-devtools::install_github(..., build = TRUE, build_opts = c("--no-resave-data", "--no-manual")
+devtools::install_github("atakanekiz/CIPR-Package", build_vignettes = TRUE)
 
 # Use this if you would like to install the package without vignettes
 # devtools::install_github("atakanekiz/CIPR-Package")

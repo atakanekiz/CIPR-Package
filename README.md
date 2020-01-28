@@ -23,10 +23,13 @@ This repository contains the source code for the R package implementation of CIP
 
 ```{r}
 
-install_github("atakanekiz/CIPR-Package", build_vignettes = TRUE)
+if (!requireNamespace("devtools", quietly = TRUE))
+    install.packages("devtools")
+
+devtools::install_github("atakanekiz/CIPR-Package", build_vignettes = TRUE)
 
 # # For faster installation without vignette
-# install_github("atakanekiz/CIPR-Package", build_vignettes = FALSE)
+# devtools::install_github("atakanekiz/CIPR-Package", build_vignettes = FALSE)
 ```
 
 #### Example use case in conjunction with Seurat pipeline
