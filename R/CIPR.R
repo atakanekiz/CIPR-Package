@@ -667,6 +667,18 @@ CIPR <- function(input_dat,
     #prep individual plots
     if(plot_ind == T){
 
+
+      colnum <- length(levels(as.factor(ref_annot$reference_cell_type)))
+
+
+      cols <- colorspace::rainbow_hcl(colnum, c = 90, l = 75, start = 0, end = 330,
+                                      gamma = NULL, fixup = TRUE, alpha = 1)
+
+      set.seed(5)
+
+      cols <- sample(cols, length(cols), replace = F)
+
+
       ind_clu_plots <- list()
 
       for (i in clusters) {
@@ -685,7 +697,7 @@ CIPR <- function(input_dat,
 
         # Plot identity scores per cluster per reference cell type and add confidence bands
         ind_clu_plots[[plotname]] <- ggpubr::ggdotplot(df_plot, x = "reference_id", y="identity_score",
-                                               fill = "reference_cell_type", xlab=F, ylab="Reference identity score",
+                                               fill = "reference_cell_type", xlab=F, ylab="Reference identity score", palette=cols,
                                                font.y = c(14, "bold", "black"), size=1, x.text.angle=90,
                                                title = paste("Cluster:",i), font.title = c(15, "bold.italic"),
                                                font.legend = c(15, "plain", "black"))+
