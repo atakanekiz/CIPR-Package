@@ -530,7 +530,7 @@ CIPR <- function(input_dat,
         # Store results in a data frame
         df <- data.frame(identity_score = cor_df[1,])
 
-        df <- rownames_to_column(df, var="reference_id")
+        df <- tibble::rownames_to_column(df, var="reference_id")
 
         # Combine results with reference annotations
         if(reference != "custom"){
