@@ -205,7 +205,7 @@ CIPR <- function(input_dat,
 
     input_dat <- input_dat[!duplicated(input_dat[,gene_column]),]
 
-    if(length(gene_column) != 1) stop("Check column names of the input data. Data frame must have one column named as 'gene'")
+    if(length(gene_column) != 1) stop("Check column names of the input data. Data frame must have a column named as 'gene'")
 
   }
 
@@ -218,7 +218,11 @@ CIPR <- function(input_dat,
 
   message("Preparing reference data")
 
-    if(reference == "immgen"){
+    if(is.null(reference)){
+
+      stop('Please specify the reference dataset. The following are allowed: "mmrnaseq",  "blueprint", "hpca", "dice", "hema", "hsrnaseq", "custom"')
+
+    } else if(reference == "immgen"){
 
     message("Reading ImmGen reference data")
 
@@ -298,7 +302,7 @@ CIPR <- function(input_dat,
 
   ref_gene_column <- grep("^gene", colnames(ref_dat), ignore.case = T, value = T)
 
-  if(length(ref_gene_column) != 1) stop("Check column names of the input data. Data frame must have one column named as 'gene'")
+  if(length(ref_gene_column) != 1) stop("Check column names of the input data. Data frame must have a column named as 'gene'")
 
   ref_dat[, ref_gene_column] <- tolower(ref_dat[, ref_gene_column])
 
