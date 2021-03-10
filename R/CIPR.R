@@ -184,7 +184,7 @@ CIPR <- function(input_dat,
 
     # Define column names to allow flexibility in case and close matches in column names
     gene_column <- grep("gene", colnames(input_dat), ignore.case = T, value = T)
-    logFC_column <- grep("logfc", colnames(input_dat), ignore.case = T, value = T)
+    logFC_column <- grep("logfc|log2fc", colnames(input_dat), ignore.case = T, value = T)
     cluster_column <- grep("cluster", colnames(input_dat), ignore.case = T, value = T)
 
 
