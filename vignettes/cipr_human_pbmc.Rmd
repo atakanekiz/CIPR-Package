@@ -183,7 +183,7 @@ __This is the step where we generate the input for CIPR's all-genes correlation 
 
 avgexp <- AverageExpression(pbmc)
 
-avgexp <- avgexp$RNA
+avgexp <- as.data.frame(avgexp$RNA)
 
 avgexp$gene <- rownames(avgexp)
 
