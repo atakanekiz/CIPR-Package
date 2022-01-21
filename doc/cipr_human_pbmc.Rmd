@@ -185,6 +185,8 @@ avgexp <- AverageExpression(pbmc)
 
 avgexp <- avgexp$RNA
 
+avgexp <- as.data.frame(avgexp)
+
 avgexp$gene <- rownames(avgexp)
 
 ```
