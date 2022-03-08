@@ -102,8 +102,8 @@
 #' CIPR(input_dat = allmarkers,
 #' comp_method = "logfc_dot_product",
 #' reference="custom",
-#' custom_ref_dat_path = custom_ref_df,
-#' custom_ref_annot_path = custom_annot_df,
+#' custom_reference = custom_ref_df,
+#' custom_ref_annot = custom_annot_df,
 #' keep_top_var = 100,
 #' global_results_obj = T,
 #' plot_top = T)
@@ -545,12 +545,12 @@ CIPR <- function(input_dat,
 
 
 
-        } else if (reference == "custom" & !is.null(custom_ref_annot_path)){
+        } else if (reference == "custom" & !is.null(custom_ref_annot)){
 
           df <- dplyr::left_join(df, ref_annot, by=c("reference_id" = "short_name"))
 
 
-        } else if(reference == "custom" & is.null(custom_ref_annot_path)){
+        } else if(reference == "custom" & is.null(custom_ref_annot)){
 
           # Fill in with reminder if annotation file is not updated
           df$reference_cell_type <- rep("Upload annotation file", dim(ref_dat)[2]-1)
@@ -625,12 +625,12 @@ CIPR <- function(input_dat,
 
 
 
-        } else if (reference == "custom" & !is.null(custom_ref_annot_path)){
+        } else if (reference == "custom" & !is.null(custom_ref_annot)){
 
           df <- dplyr::left_join(df, ref_annot, by=c("reference_id" = "short_name"))
 
 
-        } else if(reference == "custom" & is.null(custom_ref_annot_path)){
+        } else if(reference == "custom" & is.null(custom_ref_annot)){
 
           df$reference_cell_type <- rep("Upload annotation file", dim(ref_dat)[2]-1)
           df$short_name <- colnames(ref_dat)[!colnames(ref_dat) %in% ref_gene_column]
