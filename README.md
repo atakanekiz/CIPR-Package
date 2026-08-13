@@ -34,6 +34,14 @@ devtools::install_github("atakanekiz/CIPR-Package", build_vignettes = TRUE)
 
 #### Example use case in conjunction with Seurat pipeline
 
+## Find differentially expressed genes
+
+__This is the step where we generate the input for CIPR's log fold change (logFC) comparison methods.__
+
+```{r, echo=F, results="hide"}
+allmarkers <- FindAllMarkers(pbmc)
+```
+
 ```{r}
 
 
